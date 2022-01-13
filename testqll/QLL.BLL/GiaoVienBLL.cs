@@ -23,6 +23,10 @@ namespace QLL.BLL
         {
             return dal.GetAll();
         }
+        public object GetGVByPage(int page, int size)
+        {
+            return dal.GetGVByPage(page, size);
+        }    
         public bool Update(GiaoVienDTO gv)
         {
             return dal.Update(gv);

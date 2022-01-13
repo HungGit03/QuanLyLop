@@ -21,6 +21,12 @@ namespace QuanLyLop2_ASP.NETCore.Pages
         {
             lstGV = busGV.GetAll().ToList();
         }
+        public IActionResult OnPostList(string filter)
+        {
+            var obj = JsonSerializer.Deserialize<Filter>(filter);
+            var Data = busGV.GetGVByPage(obj.Page, obj.Size);
+            return new ObjectResult(new { success = true, data = Data }) { StatusCode = 200 };
+        }
         public IActionResult OnPostUpdate(String gv)
         {
             var obj = JsonSerializer.Deserialize<GiaoVienDTO>(gv);
