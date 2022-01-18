@@ -1,0 +1,29 @@
+@page
+@model QuanLyLop.Pages.HocSinh.DiemModel
+@using QLL.DTO
+@using Microsoft.AspNetCore.Antiforgery
+@inject IAntiforgery antiforgery
+@{
+   var token = antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
+}
+
+<div class="diemhs-section">
+    <h1 style="text-align: center; margin-bottom: 30px;">Điểm</h1>
+    <h3 style="margin-bottom: 20px;">@Model.tenHocSinh</h3>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Tên môn học</th>
+                <th scope="col">Điểm</th>
+            </tr>
+        </thead>
+        @foreach(DiemDTO diem in Model.bangDiem){
+            <tbody>
+                <tr>
+                    <th>@Model.busMonHoc.getTenMH(diem.MaMh)</th>
+                    <td>@diem.Diem</td>
+                </tr>
+            </tbody>
+        }
+        
+</div>

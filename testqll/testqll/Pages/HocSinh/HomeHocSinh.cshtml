@@ -1,0 +1,50 @@
+﻿@page
+@model QuanLyLop.Pages.HocSinh.HomeHocSinhModel
+@using QLL.DTO
+@using Microsoft.AspNetCore.Antiforgery
+@inject IAntiforgery antiforgery
+@{
+   var token = antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
+}
+
+<div class="info-student-section">
+    <h1 style="text-align: center; margin-bottom: 30px;">Thông tin học sinh</h1>
+    <table class="table info-student-table">
+        <tbody>
+            <tr>
+                <th scope="col">Mã Học Sinh</th>
+                <td>@Model.maHS</td>
+            </tr>
+             <tr>
+                <th scope="col">Tên Học Sinh</th>
+                <td>@Model.TenHS</td>
+            </tr>
+             <tr>
+                <th scope="col">Giới Tính</th>
+                <td>@Model.GioiTinh</td>
+            </tr>
+             <tr>
+                <th scope="col">Ngày Sinh</th>
+                <td>@Model.NgaySinh</td>
+            </tr>
+            <tr>
+                <th scope="col">Địa Chỉ</th>
+                <td>@Model.DiaChi</td>
+            </tr>
+            <tr>
+                <th scope="col">Số điện thoại</th>
+                <td>@Model.Sdt</td>
+            </tr>
+            <tr>
+                <th scope="col">Email</th>
+                <td>@Model.Email</td>
+            </tr>
+            <tr>
+                <th scope="col">Lớp</th>
+                <td>@Model.Lop</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+

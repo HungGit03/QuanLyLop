@@ -1,0 +1,33 @@
+@page
+@model QuanLyLop.Pages.HocSinh.TkbModel
+@using QLL.DTO
+@using Microsoft.AspNetCore.Antiforgery
+@inject IAntiforgery antiforgery
+@{
+   var token = antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
+}
+
+<div class="tkb-section">
+    <h1 style="text-align: center; margin-bottom: 30px;">Thời khóa biểu</h1>
+    <h3 style="margin-bottom: 20px;"><span>@Model.TenHS</span> - Lớp <span>@Model.Lop</span></h3>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Thứ</th>
+                <th scope="col">Tiết</th>
+                <th scope="col">Môn</th>
+                <th scope="col">Giáo Viên</th>
+            </tr>
+        </thead>
+        @foreach(TKBCTDTO tkb in Model.tkb){
+            <tbody>
+                <tr>
+                    <th scope="row">@tkb.Thu</th>
+                    <td>@tkb.Tiet</td>
+                    <td>@Model.busMonHoc.getTenMH(tkb.MaMh)</td>
+                    <td>@Model.busGV.getTenGV(tkb.MaGv)</td>
+                </tr>
+            </tbody>
+        }
+        
+</div>
