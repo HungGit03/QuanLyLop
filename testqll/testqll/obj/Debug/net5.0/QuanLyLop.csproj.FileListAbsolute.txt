@@ -86,3 +86,16 @@ D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\obj\Debug\net5.0\QuanLyLop.ge
 D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\obj\Debug\net5.0\Razor\Pages\TKB.cshtml.g.cs
 D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\obj\Debug\net5.0\Razor\Pages\ChiTietTKB.cshtml.g.cs
 D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\obj\Debug\net5.0\Razor\Pages\InFo_Lop.cshtml.g.cs
+D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\obj\Debug\net5.0\Razor\Pages\Home.cshtml.g.cs
+D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\obj\Debug\net5.0\Razor\Pages\Shared\_Menu_admin.cshtml.g.cs
+D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\obj\Debug\net5.0\Razor\Pages\Shared\_Menu_GV.cshtml.g.cs
+D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\obj\Debug\net5.0\Razor\Pages\Shared\_Menu_HS.cshtml.g.cs
+D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\bin\Debug\net5.0\Humanizer.dll
+D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\obj\Debug\net5.0\Razor\Pages\PhoDiem.cshtml.g.cs
+D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\bin\Debug\net5.0\System.Data.SqlClient.dll
+D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\bin\Debug\net5.0\runtimes\win-arm64\native\sni.dll
+D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\bin\Debug\net5.0\runtimes\win-x64\native\sni.dll
+D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\bin\Debug\net5.0\runtimes\win-x86\native\sni.dll
+D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\bin\Debug\net5.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\Thanh_Hung\LTCSDL\git\QuanLyLop\testqll\testqll\bin\Debug\net5.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll

@@ -35,5 +35,14 @@ namespace QLL.BLL
         {
             return dal.Add(lop);
         }
+        public IList<LopDTO> GetLopByIdGV(string maGv)
+        {
+            return dal.GetLopByIdGV(maGv);
+        }
+
+        public IList<KhoaHocDTO> GetAllKH(int maLop)
+        {
+            return dal.GetAllKH(maLop);
+        }
     }
 }

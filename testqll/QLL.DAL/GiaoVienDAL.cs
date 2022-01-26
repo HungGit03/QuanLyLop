@@ -24,6 +24,54 @@ namespace QLL.DAL
             return ma;
 
         }
+        public object GetGVByPage(int page, int size)
+        {
+            List<GiaoVienDTO> data = new List<GiaoVienDTO>();
+            var res = new
+            {
+                Data = data,
+                TotalRecord = 0,
+                TotalPage = 0,
+                Page = page,
+                Size = size
+            };
+            try
+            {
+                var ls = db.GiaoVienDbs.ToList();
+                var offset = (page - 1) * size;
+                var totalRecord = ls.Count();
+                var tottalPage = (totalRecord % size) == 0 ? (int)(totalRecord / size) : (int)(totalRecord / size + 1);
+                var lst = ls.Skip(offset).Take(size);
+                foreach (var gv in lst)
+                {
+
+                    GiaoVienDTO dto = new GiaoVienDTO();
+                    dto.MaGv= gv.MaGv;
+                    dto.TenGv = gv.TenGv;
+                    dto.GioiTinh = gv.GioiTinh;
+                    dto.NgaySinh = gv.NgaySinh;
+                    dto.DiaChi = gv.DiaChi;
+                    dto.Sdt = gv.Sdt;
+                    dto.Email = gv.Email;
+                    dto.ChuyenNganh = gv.ChuyenNganh;
+                    dto.TrinhDoChuyenMon = gv.TrinhDoChuyenMon;
+                    data.Add(dto);
+                }
+                res = new
+                {
+                    Data = data,
+                    TotalRecord = totalRecord,
+                    TotalPage = tottalPage,
+                    Page = page,
+                    Size = size
+                };
+            }
+            catch (Exception ex)
+            {
+                res = null;
+            }
+            return res;
+        }
         public IList<GiaoVienDTO> GetAll()
         {
             List<GiaoVienDTO> res = new List<GiaoVienDTO>();
@@ -33,7 +81,7 @@ namespace QLL.DAL
                 foreach (var gv in ls)
                 {
                     GiaoVienDTO dto = new GiaoVienDTO();
-                    dto.MaGv= gv.MaGv;
+                    dto.MaGv = gv.MaGv;
                     dto.TenGv = gv.TenGv;
                     dto.GioiTinh = gv.GioiTinh;
                     dto.NgaySinh = gv.NgaySinh;
@@ -46,6 +94,28 @@ namespace QLL.DAL
                 }
             }
             catch (Exception ex)
+            {
+                res = null;
+            }
+            return res;
+        }
+        public GiaoVienDTO GetByID(string maGv)
+        {
+            GiaoVienDTO res = new GiaoVienDTO();
+            var gv = db.GiaoVienDbs.FirstOrDefault(gv => gv.MaGv == maGv);
+            if(gv != null)
+            {
+                res.MaGv = gv.MaGv;
+                res.TenGv = gv.TenGv;
+                res.NgaySinh = gv.NgaySinh;
+                res.GioiTinh = gv.GioiTinh;
+                res.ChuyenNganh = gv.ChuyenNganh;
+                res.Sdt = gv.Sdt;
+                res.DiaChi = gv.DiaChi;
+                res.Email = gv.Email;
+                res.TrinhDoChuyenMon = gv.TrinhDoChuyenMon;
+            }
+            else
             {
                 res = null;
             }

@@ -62,7 +62,33 @@ namespace QLL.DAL
                 res = null;
             }
             return res;
-
+        }
+        public IList<LopDTO> GetLopByIdGV(string maGv)
+        {
+            IList<LopDTO> res = new List<LopDTO>();
+            try
+            {
+                var ls = db.Tkbctdbs.Where(tkb => tkb.MaGv == maGv).Join(
+                    db.GiaoVienDbs,
+                    tkb => tkb.MaGv,
+                    gv => gv.MaGv,
+                    (tkb, gv) => new
+                    {   
+                        tkb.Malop
+                    }
+                    ).ToList();
+                foreach (var l in ls.Distinct())
+                {             
+                        LopDTO dto = new LopDTO();
+                        dto = GetLopById(l.Malop) ;
+                        res.Add(dto);               
+                }
+            }
+            catch (Exception ex)
+            {
+                res = null;
+            }
+            return res;
         }
         public bool Update(LopDTO lop)
         {
@@ -128,5 +154,35 @@ namespace QLL.DAL
             }
             return res;
         }
+        public IList<KhoaHocDTO> GetAllKH(int maLop)
+        {
+            List<KhoaHocDTO> res = new List<KhoaHocDTO>();
+            try
+            {
+                var ls = db.LopDbs.Join(db.Hocs,
+                                        l => l.MaLop,
+                                        h => h.MaLop,
+                                        (l, h) => new { h.MaKh }).Join(db.KhoaHocDbs,
+                                        h => h.MaKh,
+                                        kh => kh.MaKh,
+                                        (h, kh) => new { kh.MaKh, kh.NgayBatDau, 
+                                            kh.NgayKetThuc, kh.TenKh,}).ToList();
+                foreach(var i in ls.Distinct())
+                {
+                    KhoaHocDTO dto = new KhoaHocDTO();
+                    dto.MaKh = i.MaKh;
+                    dto.TenKh = i.TenKh;
+                    dto.NgayKetThuc = i.NgayKetThuc;
+                    dto.NgayBatDau = i.NgayBatDau;
+                    res.Add(dto);
+                }    
+            }
+            catch(Exception ex1)
+            {
+                res = null;
+            }
+            return res;
+        }
+        
     }
 }

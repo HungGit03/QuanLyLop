@@ -15,6 +15,48 @@ namespace QLL.DAL
         {
             db = new QuanLyLopContext();
         }
+
+        public object GetMHByPage(int page, int size)
+        {
+
+            List<MonHocDTO> data = new List<MonHocDTO>();
+            var res = new
+            {
+                Data = data,
+                TotalRecord = 0,
+                TotalPage = 0,
+                Page = page,
+                Size = size
+            };
+            try
+            {
+                var ls = db.MonHocDbs.ToList();
+                var offset = (page - 1) * size;
+                var totalRecord = ls.Count();
+                var tottalPage = (totalRecord % size) == 0 ? (int)(totalRecord / size) : (int)(totalRecord / size + 1);
+                var lst = ls.Skip(offset).Take(size);
+                foreach (var hs in lst)
+                {
+                    MonHocDTO dto = new MonHocDTO();
+                    dto.MaMh = hs.MaMh;
+                    dto.TenMh = hs.TenMh;
+                    data.Add(dto);
+                }
+                res = new
+                {
+                    Data = data,
+                    TotalRecord = totalRecord,
+                    TotalPage = tottalPage,
+                    Page = page,
+                    Size = size
+                };
+            }
+            catch (Exception ex)
+            {
+                res = null;
+            }
+            return res;
+        }
         public IList<MonHocDTO> GetAll()
         {
             List<MonHocDTO> res = new List<MonHocDTO>();
@@ -54,6 +96,21 @@ namespace QLL.DAL
             }
             return res;
         }
+        public MonHocDTO GetMHById(int mh)
+        {
+            MonHocDTO res = new MonHocDTO();
+            var c = db.MonHocDbs.FirstOrDefault(x => x.MaMh == mh);
+            try
+            {
+                res.MaMh = c.MaMh;
+                res.TenMh = c.TenMh;
+            }
+            catch (Exception ex)
+            {
+                res = null;
+            }
+            return res;
+        }
         public bool Delete(int maMh)
         {
             bool res = false;
@@ -83,6 +140,24 @@ namespace QLL.DAL
                 res.TenMh = c.TenMh;
             }
             catch (Exception ex)
+            {
+                res = null;
+            }
+            return res;
+        }
+        public MonHocDTO GetById(int id)
+        {
+            MonHocDTO res = new MonHocDTO();
+            try 
+            {
+                var mh = db.MonHocDbs.FirstOrDefault(mh => mh.MaMh == id);
+                if(mh != null)
+                {
+                    res.MaMh = mh.MaMh;
+                    res.TenMh = mh.TenMh;
+                }    
+            }
+            catch(Exception ex1)
             {
                 res = null;
             }

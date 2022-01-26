@@ -1,15 +1,62 @@
 ﻿@page "/ThongTinLop"
 @using QLL.DTO
 @using System.Text.Json
+@using Microsoft.AspNetCore.Http
 @Html.AntiForgeryToken()
 @model QuanLyLop.Pages.InFo_LopModel
 @using Microsoft.AspNetCore.Antiforgery
+@{
+    ViewData["Title"] = "thông tin lớp";
+}
 @inject IAntiforgery antiforgery
 @{
     var token = antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
 }
+@section menu_nav
+    {
+    <li>
+        <img src="~/images/avatar.png" alt="Avatar" class="rounded-circle" style="background-color: #222d32; height: 35px; margin: 0px 10px; ">
+    </li>
+    <li class="nav-item d-flex align-items-center" style="font-weight: 500;">
+        <a class="nav-link text-dark" asp-area="" asp-page="/Index">
+            @if (HttpContext.Session.GetString("user_id").Substring(0, 2) == "ad")
+            {
+                @Model.busAd.GetById(HttpContext.Session.GetString("user_id")).TenAdmin
+            }
+            else if (HttpContext.Session.GetString("user_id").Substring(0, 2) == "gv")
+            {
+                @Model.busGV.GetByID(HttpContext.Session.GetString("user_id")).TenGv
+            }
+            else
+            {
+                @Model.busHS.GetHSByID(HttpContext.Session.GetString("user_id")).TenHs
+            }
+        </a>
+    </li>
+    <li class="nav-item d-flex align-items-center">
+        <a class="nav-link btn btn-outline-danger" asp-area="" asp-page="/Index">Đăng xuất</a>
+    </li>
+
+}
+
+@section menu
+    {
+    @if (HttpContext.Session.GetString("user_id").Substring(0, 2) == "hs")
+    {
+        <partial name="~/Pages/Shared/_Menu_HS.cshtml" />
+    }
+    @if (HttpContext.Session.GetString("user_id").Substring(0, 2) == "gv")
+    {
+        <partial name="~/Pages/Shared/_Menu_GV.cshtml" />
+    }
+    @if (HttpContext.Session.GetString("user_id").Substring(0, 2) == "ad")
+    {
+        <partial name="~/Pages/Shared/_Menu_admin.cshtml" />
+    }
+}
 
 <div class="title-info">
+
     @if (Model.lop != null)
     {
         <table class="table table-borderless tbl-info">
@@ -21,7 +68,24 @@
                 <td>Mô tả: @Model.lop.MoTa</td>
                 <td>Phòng học: @Model.lop.PhongHoc</td>
             </tr>
+            @if (HttpContext.Session.GetString("user_id").Substring(0, 2) == "gv")
+            {
+                @foreach (List_Mh mh in Model.lstMH)
+                {
+                    @if (Model.lop.MaLop == mh.maLop)
+                    {
+                        <tr>
+                            <td colspan="2">Dạy: @mh.tenMH</td>
+                        </tr>
+                    }
+                }
+            }
         </table>
+        <div>
+            <a class="btn btn-primary" asp-area="" asp-page="/Diem" asp-route-maLop="@Model.maLop">
+                Bảng điểm
+            </a>
+        </div>
         <div class="ds-hs">
             <h3>Danh sách học sinh</h3>
             <form method="post" asp-page="/InFo_Lop" asp-route-maLop="@Model.lop.MaLop">
@@ -63,6 +127,6 @@
                 }
             </table>
         </div>
-     }
-                
-        </div>
+    }
+
+</div>

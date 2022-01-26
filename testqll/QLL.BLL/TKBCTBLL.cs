@@ -15,6 +15,10 @@ namespace QLL.BLL
         {
             dal = new TKBCTDAL();
         }
+        public IList<TKBCTDTO> GetById(int maTKB)
+        {
+            return dal.GetById(maTKB);
+        }
         public IList<TKBCTDTO> GetAll()
         {
             return dal.GetAll();
@@ -30,6 +34,24 @@ namespace QLL.BLL
         public TKBCTDTO Add(TKBCTDTO tkb)
         {
             return dal.Add(tkb);
+        }
+
+        public IList<List_Mh> GetMonHocByIdGv(string maGv, int maLop)
+        {
+            return dal.GetMonHocByIdGv(maGv, maLop);
+        }
+        public IList<TKBCTDTO> getTkbByLop(int maLop)
+        {
+            return dal.getTkbByLop(maLop);
+        }
+        public IList<TKBCTDTO> getTbkByGv(string maGv)
+        {
+            return dal.getTbkByGv(maGv);
+        }
+
+        public object GetTKBByPage(int page, int size)
+        {
+            return dal.GetTKBByPage(page, size);
         }
     }
 }

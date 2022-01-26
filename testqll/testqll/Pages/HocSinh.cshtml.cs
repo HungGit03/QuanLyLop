@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
 using QLL.BLL;
@@ -6,29 +6,76 @@ using QLL.DTO;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using System.ComponentModel;
 
 namespace QuanLyLop2_ASP.NETCore.Pages
 {
     public class HocSinhModel : PageModel
     {
-        private HocSinhBLL busHS;
+        public HocSinhBLL busHS;
+        public GiaoVienBLL busGV;
+        public AdminBLL busAd;
         private LopBLL busLop;
         public List<HocSinhDTO> lstHS;
+        public List<HocSinhDTO> lstHS1;
         public List<LopDTO> lstLop;
         public int TotalPage;
+        [BindProperty]
+        [DisplayName("Mã học sinh")]
+        public string maHS { get; set; }
+
+        [BindProperty]
+        [DisplayName("Họ tên")]
+        public string tenHS { get; set; }
+        [BindProperty]
+        [DisplayName("Mã lớp")]
+        public int maLop { get; set; }
         public HocSinhModel()
         {
-           busHS = new HocSinhBLL();
-           busLop = new LopBLL(); 
+            busGV = new GiaoVienBLL();
+            busAd = new AdminBLL();
+            busHS = new HocSinhBLL();
+            busLop = new LopBLL(); 
         }
         public void OnGet()
         {
-            int size = 5;
-            lstHS = busHS.GetAll().Take(size).ToList();
+            int size = 10;
+            lstHS = busHS.GetAll().ToList();
+            lstHS1 = busHS.GetAll().Take(size).ToList();
             lstLop = busLop.GetAll().ToList();
-            var totalRecord = busHS.GetAll()    .Count();
-            var tottalPage = (totalRecord % size) == 0 ? (int)(totalRecord / size) : (int)(totalRecord / size + 1);
+            var totalRecord = busHS.GetAll().Count();
+            TotalPage = (totalRecord % size) == 0 ? (int)(totalRecord / size) : (int)(totalRecord / size + 1);
         }
+        public void OnPost()
+        {
+            lstHS = busHS.GetAll().ToList();
+            TotalPage = 1;
+            int flat = 0;
+            var temp = new List<HocSinhDTO>();
+            if(maHS != null && maHS != "")
+            {
+                temp = lstHS.Where(x => x.MaHs == maHS).ToList();
+                lstHS1 = temp;
+                flat = 1;
+            }
+            if (maLop != 0 )
+            {
+                temp = lstHS.Where(x => x.MaLop == maLop).ToList();
+                lstHS1 = temp;
+                flat = 1;
+            }
+            if (tenHS != null && tenHS != "")
+            {
+                temp = lstHS.Where(x => x.TenHs == tenHS).ToList();
+                lstHS1 = temp;
+                flat = 1;
+            }
+            if(flat == 0)
+            {
+                OnGet();
+            }    
+        }
+    
         public IActionResult OnPostList(string filter)
         {
             var obj = JsonSerializer.Deserialize<Filter>(filter);

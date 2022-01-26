@@ -19,7 +19,9 @@ function openModalHS(id) {
                 $('#selML').val(item.MaLop);
                 break;
             }
+            console.log(dataHS[i]);
         }
+        console.log(item);
         $('#txtMaHS').val(item.MaHs);
         $('#txtTenHS').val(item.TenHs);
         $('#txtNS').val(item.NgaySinh.slice(0, 10));
@@ -1368,8 +1370,8 @@ function deleteTKGV(id) {
     });
 }
 //Điểm
-function openModalD(idMH, idHS) {
-    if (idMH != null || idHS != null) {
+function openModalD(idMH, idHS, idKh) {
+    if (idMH != null || idHS != null || idKh != null) {
         //Cập nhập
         $('#DivModalD').modal('show');
         $('#MaMH').text("Môn học " + idMH);
@@ -1381,9 +1383,11 @@ function openModalD(idMH, idHS) {
                 break;
             }
         }
+        console.log(item);  
         $('#txtMaMH').val(item.MaMh);
         $('#txtMaHS').val(item.MaHs);
         $('#txtDiem').val(item.Diem);
+        $('#txtMaKH').val(item.MaKh);
         $('#txtMaMH').attr('readonly', true);
         $('#txtMaHS').attr('readonly', true);
     }
@@ -1394,6 +1398,7 @@ function openModalD(idMH, idHS) {
         $('#txtMaMH').val("");
         $('#txtMaHS').val("");
         $('#txtDiem').val("");
+        $('#txtMaKH').val("");
         $('#txtMaMH').attr('readonly', false);
         $('#txtMaHS').attr('readonly', false);
     }
@@ -1406,6 +1411,7 @@ function saveD() {
         item.MaMh = parseInt($('#txtMaMH').val());
         item.MaHs = $('#txtMaHS').val();
         item.Diem = parseFloat($('#txtDiem').val());
+        item.MaKh = parseInt($('#txtMaKH').val());
         var str = JSON.stringify(item);
         console.log(str);
         $.ajax({
@@ -1425,7 +1431,8 @@ function saveD() {
                     dataD.push(item);
                     $("#MaMH").text("mã môn " + obj.maMh);
                     $("#MaHS").text("học sinh " + obj.maHs);
-                    var htmlStr = '<tr id="trD_' + obj.maMh + obj.maHs + '">';
+                    var htmlStr = '<tr id="trD_' + obj.maMh + obj.maHs + obj.maKh +'">';
+                    htmlStr += '<td>' + obj.maKh + '</td>';
                     htmlStr += '<td>' + obj.maMh + '</td>';
                     htmlStr += '<td>' + obj.maHs + '</td>';
                     htmlStr += '<td>' + obj.diem + '</td>';
@@ -1447,6 +1454,7 @@ function saveD() {
         item.MaMh = parseInt($('#txtMaMH').val());
         item.MaHs = $('#txtMaHS').val();
         item.Diem = parseFloat($('#txtDiem').val());
+        item.MaKh = parseInt($('#txtMaKH').val());
         var str = JSON.stringify(item);
         //console.log(str);
         $.ajax({
@@ -1462,7 +1470,8 @@ function saveD() {
                 console.log(res)
                 if (res.success) {
                     alert("Cập nhập thành công !!");
-                    $("#trD_" + item.MaMh + item.MaHs + " td:eq(2)").html(item.Diem);
+                    $("#trD_" + item.MaMh + item.MaHs + item.MaKh + " td:eq(3)").html(item.Diem);
+                    $("#trD_" + item.MaMh + item.MaHs + item.MaKh + " td:eq(0)").html(item.MaKh);
                     console.log(item.Diem);
                     for (var i = 0; i < dataD.length; i++) {
                         if (item.MaMh == dataD[i].MaMh && item.MaHs == dataD[i].maHS) {
@@ -1523,9 +1532,16 @@ function openModalTKB(id) {
                 break;
             }
         }
+        console.log(item);
         $('#txtMaTKB').val(item.MaTkb);
-        $('#txtMaKH').val(item.MaKh);
+        $('#selMaKH').val(item.MaKh);
         $('#selMaKH').attr('disabled', true);
+        if (item.TrangThai == true) {
+            $('#selTT').val("true");
+        }
+        else {
+            $('#selTT').val("false");
+        }
     }
     else {
         $('#DivModalTKB').modal('show');
@@ -1533,6 +1549,7 @@ function openModalTKB(id) {
         $('#txtMaTKB').val("");
         $('#selMaKH').val("");
         $('#selMaKH').attr('disabled', false);
+        $('#selTT').val("");
 
     }
 
@@ -1542,6 +1559,13 @@ function saveTKB() {
         //Thêm mới
         var item = {};
         item.MaKh = parseInt($('#selMaKH').val());
+
+        if ($('#selTT').val() == true) {
+            item.TrangThai = true;
+        }
+        else {
+            item.TrangThai = false;
+        }
         var str = JSON.stringify(item);
         console.log(str);
         $.ajax({
@@ -1564,6 +1588,7 @@ function saveTKB() {
                     var htmlStr = '<tr id="trTKB_' + obj.maTkb + '">';
                     htmlStr += '<td>' + obj.maTkb + '</td>';
                     htmlStr += '<td>' + obj.maKh + '</td>';
+                    htmlStr += '<td>' + obj.trangThai + '</td>';
                     htmlStr += '<td>' + ' <button type="button" onclick="openModalTKB(' + obj.maTkb + ');" class="btn btn-outline-primary btn-sm">Sửa</button>';
                     htmlStr += '<button type="button" onclick="openModalTKB(' + obj.maTkb + ');" class="btn btn-outline-primary btn-sm">';
                     htmlStr += '<a class="nav - link text - dark chitiet"  asp-area="" asp-page=" / index">chi tiết</a></button>';
@@ -1581,8 +1606,14 @@ function saveTKB() {
     else {
         //Cập nhật
         var item = {};
-        item.MaTkb = parseInt($('#MaTkb').text());
-        item.MaKh = parseInt($('#sekKH').val());
+        item.MaTkb = parseInt($('#txtMaTKB').val());
+        item.MaKh = parseInt($('#selMaKH').val());
+        if ($('#selTT').val() == true) {
+            item.TrangThai = true;
+        }
+        else {
+            item.TrangThai = false;
+        }
         var str = JSON.stringify(item);
         //console.log(str);
         $.ajax({
@@ -1719,7 +1750,7 @@ function saveTKBCT() {
                     $("#Thu").text(obj.thu);
                     $("#Tiet").text(obj.tiet);
                     console.log(obj);
-                    var htmlStr = '<tr id="trTKBCT_' + obj.malop + "_" +obj.thu+ "_" + obj.tiet +'">';
+                    var htmlStr = '<tr id="trTKBCT_' + obj.malop + +obj.thu + obj.tiet +'">';
                     htmlStr += '<td>' + obj.maTkb + '</td>';
                     htmlStr += '<td>' + obj.thu + '</td>';
                     htmlStr += '<td>' + obj.tiet + '</td>';
@@ -1762,7 +1793,7 @@ function saveTKBCT() {
                 console.log(res)
                 if (res.success) {
                     alert("Cập nhập thành công !!");
-                    console.log("trTKBCT_" + item.Malop + "_" + item.Thu + "_" + item.Tiet);
+                    console.log("trTKBCT_" + item.Malop + item.Thu + item.Tiet);
                     $("#trTKBCT_" + item.Malop + "_" + item.Thu + "_" + item.Tiet + " td:eq(0)").html(item.MaTkb);
                     $("#trTKBCT_" + item.Malop + "_" + item.Thu + "_" + item.Tiet + " td:eq(4)").html(item.MaMh);
                     $("#trTKBCT_" + item.Malop + "_" + item.Thu + "_" + item.Tiet + " td:eq(5)").html(item.MaGv);
@@ -1831,31 +1862,31 @@ function closeModal() {
 }
 
 //Pagination
-function goPre() {
+function goPre(user) {
     if (curPage == 1)
         alert('Bạn đang ở trang đầu');
-    else {
+    else{
         curPage -= 1;
-        getDataPage(curPage)
+        getDataPage(curPage, user);
     }
 }
-function goNext() {
+function goNext(user) {
     if (curPage == totPage)
         alert('Bạn đang ở trang cuối');
     else {
         curPage += 1;
-        getDataPage(curPage)
+        getDataPage(curPage, user)
     }
 }
-function getDataPage(page) {
+function getDataPage(page, user) {
     var filter = {
         Page: page,
-        Size: 5
+        Size: 10
     };
     var str = JSON.stringify(filter);
     $.ajax({
         type: "POST",
-        url: "/HocSinh?handler=List",
+        url: "/" + user + "?handler=List",
         beforeSend: function (xhr) {
             xhr.setRequestHeader("XSRF-TOKEN",
                 $('input:hidden[name="__RequestVerificationToken"]').val());
@@ -1867,10 +1898,41 @@ function getDataPage(page) {
             if (res.success) {
                 console.log(res.data)
                 var dt = res.data;
-                dataHS = dt.data;
+                if (user == "HocSinh") {
+                    dataHS1 = dt.data;
+                    $("#tbodyDT").html("");
+                    $('#hsTemplate').tmpl(dataHS1).appendTo("#tbodyDT");
+                }
+                if (user == "GiaoVien") {
+                    dataGV1 = dt.data;
+                    console.log(dataGV1);
+                    $('#tbodyDT').html("");
+                    $('#gvTemplate').tmpl(dataGV1).appendTo("#tbodyDT");
+                }
+                if (user == "Admin") {
+                    dataAd1 = dt.data;
+                    $('#tbodyDT').html("");
+                    $('#adTemplate').tmpl(dataAd1).appendTo("#tbodyDT");
+                }
+                if (user == "Diem") {
+                    dataD1 = dt.data;
+                    console.log(dataD1);
+                    $('#tbodyDT').html("");
+                    $('#diemTemplate').tmpl(dataD1).appendTo("#tbodyDT");
+                }
+                if (user == "MonHoc") {
+                    dataMH1 = dt.data;
+                    console.log(dataMH1);
+                    $('#tbodyDT').html("");
+                    $('#mhTemplate').tmpl(dataMH1).appendTo("#tbodyDT");
+                }
+                if (user == "ChiTietTKB") {
+                    dataTKBCT1 = dt.data;
+                    console.log(dataTKBCT1);
+                    $('#tbodyDT').html("");
+                    $('#tkbTemplate').tmpl(dataTKBCT1).appendTo("#tbodyDT");
+                }
                 totPage = dt.totalPage;
-                $("#tbodyHS").html("");
-                $('#hsTemplate').tmpl(dataHS).appendTo("#tbodyHS");
                 $('#spanCurrentPage').text(page);
             }
         },
