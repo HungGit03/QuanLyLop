@@ -13,7 +13,24 @@ namespace QLL.BLL
         private DiemDAL dal;
         public DiemBLL()
         {
-            dal = new DiemDAL();  
+            dal = new DiemDAL();
+        }
+        public object GetDiemByPage(int page, int size)
+        {
+            return dal.GetDiemByPage(page, size);
+        }
+
+        public IList<DiemDTO> GetByMonGV(int maLop, string maGv)
+        {
+            return dal.GetByMonGV(maLop, maGv);
+        }
+        public IList<PhoDiem> GetAllGroupBy(int maKh, int maLop, int maMon)
+        {
+            return dal.GetAllGroupBy(maKh, maLop, maMon);
+        }
+        public double GetById(int maMh, string maHs, int maKh)
+        {
+            return dal.GetById(maMh, maHs, maKh);
         }
         public IList<DiemDTO> GetAll()
         {

@@ -31,5 +31,9 @@ namespace QLL.BLL
         {
             return dal.Add(tk);
         }
+        public string login(string username, string password)
+        {
+            return dal.login(username, password);
+        }
     }
 }

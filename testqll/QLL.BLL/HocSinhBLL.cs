@@ -23,10 +23,16 @@ namespace QLL.BLL
         {
             return dal.GetHSByPage(page, size);
         }
-        public IList<HocSinhDTO> GetHSByID(int maLop)
+        public IList<HocSinhDTO> GetHSByIDLop(int maLop)
         {
-            return dal.GetHSByID(maLop);
+            return dal.GetHSByIDLop(maLop);
         }
+
+        public HocSinhDTO GetHSByID(string maHs)
+        {
+            return dal.GetHSByID(maHs);
+        }
+
         public bool Update(HocSinhDTO hs)
         {
             return dal.Update(hs);
@@ -38,6 +44,16 @@ namespace QLL.BLL
         public HocSinhDTO Add(HocSinhDTO hs)
         {
             return dal.Add(hs);
+        }
+
+        public IList<MonHocDTO> GetMHById(string maHs)
+        {
+            return dal.GetMHById(maHs);
+        }
+
+        public double DiemTB(string maHs)
+        {
+            return dal.DiemTB(maHs);
         }
     }
 }

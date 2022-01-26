@@ -39,5 +39,10 @@ namespace QLL.BLL
         {
             return dal.Add(gv);
         }
+
+        public GiaoVienDTO GetByID(string maGv)
+        {
+            return dal.GetByID(maGv);
+        }
     }
 }

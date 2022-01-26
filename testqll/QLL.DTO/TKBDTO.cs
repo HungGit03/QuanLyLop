@@ -10,5 +10,6 @@ namespace QLL.DTO
     {
         public int MaTkb { get; set; }
         public int MaKh { get; set; }
+        public bool TrangThai { get; set; }
     }
 }

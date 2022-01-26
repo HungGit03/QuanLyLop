@@ -15,6 +15,52 @@ namespace QLL.DAL
         {
             db = new QuanLyLopContext();
         }
+        public object GetAdByPage(int page, int size)
+        {
+
+            List<AdminDTO> data = new List<AdminDTO>();
+            var res = new
+            {
+                Data = data,
+                TotalRecord = 0,
+                TotalPage = 0,
+                Page = page,
+                Size = size
+            };
+            try
+            {
+                var ls = db.AdminDbs.ToList();
+                var offset = (page - 1) * size;
+                var totalRecord = ls.Count();
+                var tottalPage = (totalRecord % size) == 0 ? (int)(totalRecord / size) : (int)(totalRecord / size + 1);
+                var lst = ls.Skip(offset).Take(size);
+                foreach (var hs in lst)
+                {
+                    AdminDTO dto = new AdminDTO();
+                    dto.MaAdmin = hs.MaAdmin;
+                    dto.TenAdmin = hs.TenAdmin;
+                    dto.GioiTinh = hs.GioiTinh;
+                    dto.NgaySinh = hs.NgaySinh;
+                    dto.DiaChi = hs.DiaChi;
+                    dto.Sdt = hs.Sdt;
+                    dto.Email = hs.Email;
+                    data.Add(dto);
+                }
+                res = new
+                {
+                    Data = data,
+                    TotalRecord = totalRecord,
+                    TotalPage = tottalPage,
+                    Page = page,
+                    Size = size
+                };
+            }
+            catch (Exception ex)
+            {
+                res = null;
+            }
+            return res;
+        }
         public IList<AdminDTO> GetAll()
         {
 
@@ -74,6 +120,22 @@ namespace QLL.DAL
             catch (Exception ex)
             {
                 res = false;
+            }
+            return res;
+        }
+        public AdminDTO GetById(string maAd)
+        {
+            AdminDTO res = new AdminDTO();
+            var ad = db.AdminDbs.FirstOrDefault(ad => ad.MaAdmin == maAd);
+            if(ad != null)
+            {
+                res.MaAdmin = ad.MaAdmin;
+                res.TenAdmin = ad.TenAdmin;
+                res.NgaySinh = ad.NgaySinh;
+                res.GioiTinh = ad.GioiTinh;
+                res.Sdt = ad.Sdt;
+                res.DiaChi = ad.DiaChi;
+                res.Email = ad.Email;
             }
             return res;
         }

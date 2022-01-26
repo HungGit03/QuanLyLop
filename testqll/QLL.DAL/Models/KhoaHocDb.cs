@@ -9,6 +9,7 @@ namespace QLL.DAL.Models
     {
         public KhoaHocDb()
         {
+            DiemDbs = new HashSet<DiemDb>();
             Hocs = new HashSet<Hoc>();
             Tkbdbs = new HashSet<Tkbdb>();
         }
@@ -18,6 +19,7 @@ namespace QLL.DAL.Models
         public DateTime NgayBatDau { get; set; }
         public DateTime NgayKetThuc { get; set; }
 
+        public virtual ICollection<DiemDb> DiemDbs { get; set; }
         public virtual ICollection<Hoc> Hocs { get; set; }
         public virtual ICollection<Tkbdb> Tkbdbs { get; set; }
     }

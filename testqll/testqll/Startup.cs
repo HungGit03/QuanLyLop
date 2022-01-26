@@ -27,6 +27,12 @@ namespace testqll
             services.AddRazorPages();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
+            services.AddDistributedMemoryCache();
+            services.AddSession((optional) =>
+            {
+                optional.Cookie.Name = "quanlylop";
+                optional.IdleTimeout = new TimeSpan(0, 30, 0);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +55,7 @@ namespace testqll
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

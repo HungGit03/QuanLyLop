@@ -89,7 +89,29 @@ namespace QLL.DAL
             }
             return res;
         }
-        public IList<HocSinhDTO> GetHSByID(int maLop)
+
+        public HocSinhDTO GetHSByID(string maHs)
+        {
+            HocSinhDTO res = new HocSinhDTO();
+            var hs = db.HocSinhDbs.FirstOrDefault(x => x.MaHs == maHs);
+            if (hs != null)
+            {
+                res.MaHs = hs.MaHs;
+                res.TenHs = hs.TenHs;
+                res.NgaySinh = hs.NgaySinh;
+                res.GioiTinh = hs.GioiTinh;
+                res.MaLop = hs.MaLop;
+                res.Sdt = hs.Sdt;
+                res.DiaChi = hs.DiaChi;
+                res.Email = hs.Email;
+            }
+            else
+            {
+                res = null;
+            }    
+            return res;
+        }
+        public IList<HocSinhDTO> GetHSByIDLop(int maLop)
         {
 
             List<HocSinhDTO> res = new List<HocSinhDTO>();
@@ -201,6 +223,68 @@ namespace QLL.DAL
                 return res;
             }
             return null;
+        }
+        public IList<MonHocDTO> GetMHById(string maHs)
+        {
+            List<MonHocDTO> res = new List<MonHocDTO>();
+            try
+            {
+                var lst = db.HocSinhDbs.Where(hs => hs.MaHs == maHs).Join(
+                    db.Tkbctdbs,
+                    hs => hs.MaLop,
+                    tkb => tkb.Malop,
+                    (hs, tkb) => new
+                    {
+                        tkb.MaMh
+                    }
+                    ).ToList();
+                foreach(var maMh in lst.Distinct())
+                {
+                    MonHocDAL dal = new MonHocDAL();
+                    if(dal.GetById(maMh.MaMh) != null)
+                    {
+                        MonHocDTO dto = new MonHocDTO();
+                        dto.MaMh = dal.GetById(maMh.MaMh).MaMh;
+                        dto.TenMh = dal.GetById(maMh.MaMh).TenMh;
+                        res.Add(dto);
+                    }    
+                }    
+            }
+            catch(Exception ex1)
+            {
+                res = null;
+            }
+            return res;
+        }
+        public double DiemTB(string maHs)
+        {
+
+            var hs = db.HocSinhDbs.Join(db.Hocs,
+                                        hs => hs.MaLop,
+                                        h => h.MaLop,
+                                        (hs, h) => new
+                                        {
+                                            h.MaLop,
+                                            h.MaKh
+                                        }).Join(db.Tkbdbs,
+                                                h => h.MaKh,
+                                                tkb => tkb.MaKh,
+                                                (h, tkb) => new { tkb.MaKh,
+                                                                tkb.TrangThai,
+                                                                h.MaLop}).Where(tkb=>tkb.TrangThai == true).ToList();
+            foreach(var i in hs)
+            {
+                KhoaHocDAL dal = new KhoaHocDAL();
+                DiemDAL dal1 = new DiemDAL();
+                double tong = 0;
+                foreach(var a in dal.GetAllMH(i.MaLop).ToList())
+                {
+                    tong += dal1.GetById(a.MaMh, maHs, i.MaKh);
+                }
+                return tong / dal.GetAllMH(i.MaLop).Count;
+
+            }    
+            return -1;
         }
     }
 }

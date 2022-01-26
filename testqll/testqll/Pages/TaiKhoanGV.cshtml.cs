@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
 using QLL.BLL;
@@ -6,15 +6,29 @@ using QLL.DTO;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.ComponentModel;
 
 namespace QuanLyLop2_ASP.NETCore.Pages
 {
     public class TaiKhoanGVModel : PageModel
     {
         private TaiKhoanGVBLL bus;
+        public AdminBLL busAd;
+        public GiaoVienBLL busGV;
+        public HocSinhBLL busHS;
         public List<TaiKhoanGVDTO> lstTKGV;
+        [BindProperty]
+        [DisplayName("Mã tài khoản")]
+        public int maTk { get; set; }
+        [BindProperty]
+        [DisplayName("Tên đăng nhâp")]
+        public string tdn { get; set; }
+        
         public TaiKhoanGVModel()
         {
+            busAd = new AdminBLL();
+            busGV = new GiaoVienBLL();
+            busHS = new HocSinhBLL();
             bus = new TaiKhoanGVBLL();
         }
         public void OnGet()
@@ -24,6 +38,24 @@ namespace QuanLyLop2_ASP.NETCore.Pages
         public IActionResult OnGetTest()
         {
             return new ObjectResult(new { Id = 123, name = "hero" }) { StatusCode = 200 };
+        }
+        public void OnPost()
+        {
+            int flat = 0;
+            if (maTk != 0)
+            {
+                lstTKGV = bus.GetAll().Where(x => x.MaTk == maTk).ToList();
+                flat = 1;
+            }
+            if (tdn != null && tdn != "")
+            {
+                lstTKGV = bus.GetAll().Where(x => x.TenDangNhap == tdn).ToList();
+                flat = 1;
+            }
+            if(flat == 0)
+            {
+                OnGet();
+            }    
         }
         public IActionResult OnPostUpdate(String tkgv)
         {

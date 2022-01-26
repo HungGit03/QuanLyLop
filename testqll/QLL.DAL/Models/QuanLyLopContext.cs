@@ -75,7 +75,7 @@ namespace QLL.DAL.Models
 
             modelBuilder.Entity<DiemDb>(entity =>
             {
-                entity.HasKey(e => new { e.MaMh, e.MaHs });
+                entity.HasKey(e => new { e.MaMh, e.MaHs, e.MaKh });
 
                 entity.ToTable("DiemDb");
 
@@ -85,11 +85,19 @@ namespace QLL.DAL.Models
                     .HasMaxLength(5)
                     .HasColumnName("MaHS");
 
+                entity.Property(e => e.MaKh).HasColumnName("MaKH");
+
                 entity.HasOne(d => d.MaHsNavigation)
                     .WithMany(p => p.DiemDbs)
                     .HasForeignKey(d => d.MaHs)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_DiemDb_HocSinhDb");
+
+                entity.HasOne(d => d.MaKhNavigation)
+                    .WithMany(p => p.DiemDbs)
+                    .HasForeignKey(d => d.MaKh)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_DiemDb_KhoaHocDb");
 
                 entity.HasOne(d => d.MaMhNavigation)
                     .WithMany(p => p.DiemDbs)
@@ -355,12 +363,14 @@ namespace QLL.DAL.Models
 
             modelBuilder.Entity<Tkbctdb>(entity =>
             {
-                entity.HasKey(e => new { e.Malop, e.Thu, e.Tiet });
+                entity.HasKey(e => new { e.MaTkb, e.Malop, e.Thu, e.Tiet });
 
                 entity.ToTable("TKBCTDb");
 
-                entity.HasIndex(e => new { e.Thu, e.Tiet, e.MaGv }, "IX_TKBCTDb")
+                entity.HasIndex(e => new { e.Thu, e.Tiet, e.MaGv, e.MaTkb }, "IX_TKBCTDb")
                     .IsUnique();
+
+                entity.Property(e => e.MaTkb).HasColumnName("MaTKB");
 
                 entity.Property(e => e.MaGv)
                     .IsRequired()
@@ -368,8 +378,6 @@ namespace QLL.DAL.Models
                     .HasColumnName("MaGV");
 
                 entity.Property(e => e.MaMh).HasColumnName("MaMH");
-
-                entity.Property(e => e.MaTkb).HasColumnName("MaTKB");
 
                 entity.HasOne(d => d.MaGvNavigation)
                     .WithMany(p => p.Tkbctdbs)

@@ -15,6 +15,11 @@ namespace QLL.BLL
         {
             dal = new MonHocDAL();
         }
+
+        public object GetMHByPage(int page, int size)
+        {
+            return dal.GetMHByPage(page, size);
+        }
         public IList<MonHocDTO> GetAll()
         {
             return dal.GetAll();
@@ -30,6 +35,15 @@ namespace QLL.BLL
         public MonHocDTO Add(MonHocDTO mh)
         {
             return dal.Add(mh);
+        }
+
+        public MonHocDTO GetMHById(int mh)
+        {
+            return dal.GetMHById(mh);
+        }
+        public MonHocDTO GetById(int id)
+        {
+            return dal.GetById(id);
         }
     }
 }

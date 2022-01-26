@@ -42,7 +42,7 @@ namespace QLL.DAL
                 var totalRecord = ls.Count();
                 var tottalPage = (totalRecord % size) == 0 ? (int)(totalRecord / size) : (int)(totalRecord / size + 1);
                 var lst = ls.Skip(offset).Take(size);
-                foreach (var gv in ls)
+                foreach (var gv in lst)
                 {
 
                     GiaoVienDTO dto = new GiaoVienDTO();
@@ -94,6 +94,28 @@ namespace QLL.DAL
                 }
             }
             catch (Exception ex)
+            {
+                res = null;
+            }
+            return res;
+        }
+        public GiaoVienDTO GetByID(string maGv)
+        {
+            GiaoVienDTO res = new GiaoVienDTO();
+            var gv = db.GiaoVienDbs.FirstOrDefault(gv => gv.MaGv == maGv);
+            if(gv != null)
+            {
+                res.MaGv = gv.MaGv;
+                res.TenGv = gv.TenGv;
+                res.NgaySinh = gv.NgaySinh;
+                res.GioiTinh = gv.GioiTinh;
+                res.ChuyenNganh = gv.ChuyenNganh;
+                res.Sdt = gv.Sdt;
+                res.DiaChi = gv.DiaChi;
+                res.Email = gv.Email;
+                res.TrinhDoChuyenMon = gv.TrinhDoChuyenMon;
+            }
+            else
             {
                 res = null;
             }

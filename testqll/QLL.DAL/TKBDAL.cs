@@ -26,6 +26,7 @@ namespace QLL.DAL
                     TKBDTO dto = new TKBDTO();
                     dto.MaTkb = m.MaTkb;
                     dto.MaKh = m.MaKh;
+                    dto.TrangThai = m.TrangThai;
                     res.Add(dto);
                 }
             }
@@ -42,6 +43,8 @@ namespace QLL.DAL
             var c = db.Tkbdbs.FirstOrDefault(x => x.MaTkb == tkb.MaTkb);
             if (c.MaTkb != tkb.MaTkb)
                 c.MaKh = tkb.MaTkb;
+            if (c.TrangThai != tkb.TrangThai)
+                c.TrangThai = tkb.TrangThai;
             try
             {
                 db.Tkbdbs.Update(c);
@@ -81,6 +84,7 @@ namespace QLL.DAL
                 db.SaveChanges();
                 res.MaTkb = c.MaTkb;
                 res.MaKh = c.MaKh;
+                res.TrangThai = c.TrangThai;
             }
             catch (Exception ex)
             {

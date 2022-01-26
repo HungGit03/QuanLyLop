@@ -95,5 +95,18 @@ namespace QLL.DAL
             }
             return res;
         }
+
+        public string login(string username, string password)
+        {
+            string userId = "";
+            var tk = db.TaiKhoanGvdbs.FirstOrDefault(x => x.TenDangNhap == username && x.MatKhau == password);
+            if (tk != null)
+            {
+                userId = tk.MaGv;
+                return userId;
+            }
+
+            return userId;
+        }
     }
 }

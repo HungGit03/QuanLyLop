@@ -15,6 +15,7 @@ namespace QLL.DAL.Models
         public int MaTkb { get; set; }
         public int MaKh { get; set; }
         public string TenTkb { get; set; }
+        public bool TrangThai { get; set; }
 
         public virtual KhoaHocDb MaKhNavigation { get; set; }
         public virtual ICollection<Tkbctdb> Tkbctdbs { get; set; }

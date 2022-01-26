@@ -19,6 +19,11 @@ namespace QLL.BLL
         {
             return dal.GetAll();
         }
+
+        public KhoaHocDTO GetById(int maKh)
+        {
+            return dal.GetById(maKh);
+        }
         public bool Update(KhoaHocDTO kh)
         {
             return dal.Update(kh);
@@ -30,6 +35,11 @@ namespace QLL.BLL
         public KhoaHocDTO Add(KhoaHocDTO kh)
         {
             return dal.Add(kh);
+        }
+
+        public IList<MonHocDTO> GetAllMH(int maLop)
+        {
+            return dal.GetAllMH(maLop);
         }
     }
 }

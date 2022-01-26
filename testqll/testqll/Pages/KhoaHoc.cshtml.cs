@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
 using QLL.DTO;
@@ -6,20 +6,42 @@ using QLL.BLL;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.ComponentModel;
 
 namespace QuanLyLop2_ASP.NETCore.Pages
 {
     public class KhoaHocModel : PageModel
     {
         private KhoaHocBLL bus;
+        public AdminBLL busAd;
+        public HocSinhBLL busHS;
+        public GiaoVienBLL busGV;
         public List<KhoaHocDTO> lstKH;
+        [BindProperty]
+        [DisplayName("Mã khoá học")]
+        public int maKh { get; set; }
         public KhoaHocModel()
         {
+            busAd = new AdminBLL();
+            busGV = new GiaoVienBLL();
+            busHS = new HocSinhBLL();
             bus = new KhoaHocBLL();
         }
         public void OnGet()
         {
             lstKH = bus.GetAll().ToList();
+        }
+        public void OnPost()
+        {
+            if(maKh != 0)
+            {
+                lstKH = bus.GetAll().Where(x => x.MaKh == maKh).ToList();
+            }
+            else
+            {
+                lstKH = bus.GetAll().ToList();
+            }
+
         }
         public IActionResult OnGetTest()
         {

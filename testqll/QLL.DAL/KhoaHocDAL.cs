@@ -39,6 +39,25 @@ namespace QLL.DAL
             return res;
 
         }
+        public KhoaHocDTO GetById(int maKh)
+        {
+            KhoaHocDTO res = new KhoaHocDTO();
+            var l = db.KhoaHocDbs.FirstOrDefault(x=>x.MaKh == maKh);
+            if(l != null)
+            {
+                res.MaKh = l.MaKh;
+                res.TenKh = l.TenKh;
+                res.NgayBatDau = l.NgayBatDau;
+                res.NgayKetThuc = l.NgayKetThuc;
+                
+            }
+            else
+            {
+                res = null;
+            }
+            return res;
+
+        }
         public bool Update(KhoaHocDTO kh)
         {
             bool res = false;
@@ -94,6 +113,35 @@ namespace QLL.DAL
                 res.NgayKetThuc = c.NgayKetThuc;
             }
             catch (Exception ex)
+            {
+                res = null;
+            }
+            return res;
+        }
+        public IList<MonHocDTO> GetAllMH(int maLop)
+        {
+            List<MonHocDTO> res = new List<MonHocDTO>();
+            try
+            {
+                var ls = db.KhoaHocDbs.Join(db.Tkbdbs,
+                                            kh => kh.MaKh,
+                                            tkb => tkb.MaKh,
+                                            (kh, tkb) => new { tkb.MaTkb }).Join(db.Tkbctdbs,
+                                            tkb => tkb.MaTkb,
+                                            tkbct => tkbct.MaTkb,
+                                            (tkb, tkbct) => new
+                                            {
+                                                tkbct.Malop,
+                                                tkbct.MaMh,
+                                            }).Where(p=>p.Malop == maLop).ToList();
+                foreach(var i in ls.Distinct())
+                {
+                    
+                    MonHocDAL dal = new MonHocDAL();
+                    res.Add(dal.GetById(i.MaMh));
+                }    
+            }
+            catch(Exception ex1)
             {
                 res = null;
             }
