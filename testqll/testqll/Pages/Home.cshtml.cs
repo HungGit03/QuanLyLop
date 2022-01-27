@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -62,7 +62,6 @@ namespace QuanLyLop.Pages
             }  
             if(user_id.Substring(0,2) == "hs")
             {
-
                 lstKH = busLop.GetAllKH(busHS.GetHSByID(user_id).MaLop).ToList();
                 lstMH = busHS.GetMHById(user_id).ToList();
                 totalHS = busHS.GetHSByIDLop(busHS.GetHSByID(user_id).MaLop).Count;

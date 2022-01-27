@@ -67,14 +67,24 @@ namespace QuanLyLop2_ASP.NETCore.Pages
         public void OnPost()
         {
             int flat = 0;
+            LstKH = busKH.GetAll().ToList();
+            List<TKBDTO> lst = new List<TKBDTO>();
             if (maKh != 0)
             {
                 lstTKB = busTKB.GetAll().Where(x => x.MaKh == maKh).ToList();
+                lst = lstTKB;
                 flat = 1;
             }
             if (maTkb != 0)
             {
-                lstTKB = busTKB.GetAll().Where(x => x.MaTkb == maTkb).ToList();
+                if(flat == 1)
+                {
+                    lstTKB = lst.Where(x => x.MaTkb == maTkb && x.MaTkb == maTkb).ToList();
+                }
+                else
+                {
+                    lstTKB = busTKB.GetAll().Where(x => x.MaTkb == maTkb).ToList();
+                }    
                 flat = 1;
             }
             if(flat == 0)

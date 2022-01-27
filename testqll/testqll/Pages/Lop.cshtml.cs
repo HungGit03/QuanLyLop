@@ -51,19 +51,39 @@ namespace QuanLyLop2_ASP.NETCore.Pages
         public void OnPost()
         {
             int flat = 0;
+            List<LopDTO> lst = new List<LopDTO>();
             if(maLop != 0)
             {
                 lstLop = bus.GetAll().Where(x=>x.MaLop == maLop).ToList();
+                lstLop = lst;
                 flat = 1;
             }
             if (phong != null)
             {
-                lstLop = bus.GetAll().Where(x => x.PhongHoc == phong).ToList();
+                if(flat == 1)
+                {
+                    lstLop = lst.Where(x => x.MaLop == maLop && x.PhongHoc == phong).ToList();
+                    lst = lstLop;
+                }
+                else
+                {
+                    lstLop = bus.GetAll().Where(x => x.PhongHoc == phong).ToList();
+                    lst = lstLop;
+                }
                 flat = 1;
             }
             if (tt != null)
             {
-                lstLop = bus.GetAll().Where(x => x.TrangThai == tt).ToList();
+                if (flat == 1)
+                {
+                    lstLop = lst.Where(x => x.MaLop == maLop && x.PhongHoc == phong && x.TrangThai.ToLower() == tt.ToLower()).ToList();
+                    lst = lstLop;
+                }
+                else
+                {
+                    lstLop = bus.GetAll().Where(x => x.TrangThai.ToLower() == tt.ToLower()).ToList();
+                    lst = lstLop;
+                }
                 flat = 1;
             }
             if(flat == 0)
