@@ -71,31 +71,63 @@ namespace QuanLyLop2_ASP.NETCore.Pages
         }
         public void OnPost()
         {
-            lstd = busd.GetByMonGV(int.Parse(maLop), HttpContext.Session.GetString("user_id")).ToList();
+            lstd = busd.GetAll().ToList();
+            if (HttpContext.Session.GetString("user_id").Substring(0, 2) == "gv")
+            {
+                lstd = busd.GetByMonGV(int.Parse(maLop), HttpContext.Session.GetString("user_id")).ToList(); 
+            }
             TotalPage = 1;
             int flat = 0;
             var temp = new List<DiemDTO>();
             if(maHs != null & maHs != "")
             {
-                temp = lstd.Where(x => x.MaHs == maHs).ToList();
+                if(flat == 0)
+                {
+                    temp = lstd.Where(x => x.MaHs == maHs).ToList();
+                }
+                else
+                {
+                    temp = lstd1.Where(x => x.MaHs == maHs).ToList();
+                }
                 lstd1 = temp;
                 flat = 1;
             }
             if (maKh != null)
             {
-                temp = lstd.Where(x => x.MaKh == int.Parse(maKh)).ToList();
+                if (flat == 0)
+                {
+                    temp = lstd.Where(x => x.MaKh == int.Parse(maKh)).ToList();
+                }
+                else
+                {
+                    temp = lstd1.Where(x => x.MaKh == int.Parse(maKh)).ToList();
+                }
                 lstd1 = temp;
                 flat = 1;
             }
             if (maMh != null)
             {
-                temp = lstd.Where(x => x.MaMh == int.Parse(maMh)).ToList();
+                if (flat == 0)
+                {
+                    temp = lstd.Where(x => x.MaMh == int.Parse(maMh)).ToList();
+                }
+                else
+                {
+                    temp = lstd1.Where(x => x.MaMh == int.Parse(maMh)).ToList();
+                }
                 lstd1 = temp;
                 flat = 1;
             }
             if (diem != null)
             {
-                temp = lstd.Where(x => x.Diem == int.Parse(diem)).ToList();
+                if (flat == 0)
+                {
+                    temp = lstd.Where(x => x.Diem == int.Parse(diem)).ToList();
+                }
+                else
+                {
+                    temp = lstd1.Where(x => x.Diem == int.Parse(diem)).ToList();
+                }
                 lstd1 = temp;
                 flat = 1;
             }

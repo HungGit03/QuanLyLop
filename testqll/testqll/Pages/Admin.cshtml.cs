@@ -51,10 +51,18 @@ namespace QuanLyLop2_ASP.NETCore.Pages
             }
             if (maAd != null && maAd != "")
             {
-                temp1 = (from hs in lstAd
-                         where hs.MaAdmin== maAd
-                         select hs).ToList();
-                lstAd1 = temp1;
+                if(flat == 1)
+                {
+                    temp1 = lstAd1.Where(x=>x.MaAdmin == maAd).ToList();
+                }  
+                else
+                {    
+                    temp1 = (from hs in lstAd
+                             where hs.MaAdmin== maAd
+                             select hs).ToList();
+                    lstAd1 = temp1;
+
+                }
                 flat = 1;
             }
             if (flat == 0)

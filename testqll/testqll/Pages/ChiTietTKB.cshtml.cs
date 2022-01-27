@@ -60,19 +60,40 @@ namespace QuanLyLop.Pages
             }
             if (tiet != null && tiet != "")
             {
-                temp = lst.Where(x => x.Tiet == int.Parse(tiet)).ToList();
+                if(flat == 1)
+                {
+                    temp = lst1.Where(x => x.Tiet == int.Parse(tiet)).ToList();
+                }
+                else
+                {
+                    temp = lst.Where(x => x.Tiet == int.Parse(tiet)).ToList();
+                }
                 lst1 = temp;
                 flat = 1;
             }
             if (maLop != null && maLop != "")
             {
-                temp = lst.Where(x => x.Malop == int.Parse(maLop)).ToList();
+                if (flat == 1)
+                {
+                    temp = lst1.Where(x => x.Malop == int.Parse(maLop)).ToList();
+                }
+                else
+                {
+                    temp = lst.Where(x => x.Malop == int.Parse(maLop)).ToList();
+                }
                 lst1 = temp;
                 flat = 1;
             }
             if (maMh != null && maMh != "")
             {
-                temp = lst.Where(x => x.MaMh == int.Parse(maMh)).ToList();
+                if (flat == 1)
+                {
+                    temp = lst1.Where(x => x.MaMh == int.Parse(maMh)).ToList();
+                }
+                else
+                {
+                    temp = lst.Where(x => x.MaMh == int.Parse(maMh)).ToList();
+                }
                 lst1 = temp;
                 flat = 1;
             }

@@ -49,6 +49,7 @@ namespace QuanLyLop2_ASP.NETCore.Pages
         public void OnPost()
         {
             lstHS = busHS.GetAll().ToList();
+            lstLop = busLop.GetAll().ToList();
             TotalPage = 1;
             int flat = 0;
             var temp = new List<HocSinhDTO>();
@@ -60,13 +61,28 @@ namespace QuanLyLop2_ASP.NETCore.Pages
             }
             if (maLop != 0 )
             {
-                temp = lstHS.Where(x => x.MaLop == maLop).ToList();
+                if(flat == 1)
+                {
+                    temp = lstHS1.Where(x => x.MaLop == maLop).ToList();
+                }    
+                else 
+                { 
+                    temp = lstHS.Where(x => x.MaLop == maLop).ToList();
+                }
                 lstHS1 = temp;
                 flat = 1;
             }
             if (tenHS != null && tenHS != "")
             {
-                temp = lstHS.Where(x => x.TenHs == tenHS).ToList();
+                if (flat == 1)
+                {
+                    temp = lstHS1.Where(x => x.TenHs == tenHS).ToList();
+                }
+                else 
+                {  
+                    temp = lstHS.Where(x => x.TenHs == tenHS).ToList();
+                }
+               
                 lstHS1 = temp;
                 flat = 1;
             }
