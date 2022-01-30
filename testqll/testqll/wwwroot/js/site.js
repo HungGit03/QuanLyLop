@@ -134,7 +134,8 @@ function saveHS() {
                     $("#trHS_" + item.MaHs + " td:eq(7)").html(item.MaLop)
                     for (var i = 0; i < dataHS.length; i++) {
                         if (item.MaLop == dataHS[i].MaHs) {
-                            dataLop[i] = item;
+                            dataHS[i] = item;
+                            console.log(dataHS[i])
                             break;
                         }
                     }
@@ -149,6 +150,8 @@ function saveHS() {
 
 }
 function deleteHS(id) {
+    if (confirm("Bạn có muốn xoá học sinh này không?") == true) {
+
     $.ajax({
         type: "POST",
         url: "/HocSinh?handler=Delete",
@@ -163,6 +166,7 @@ function deleteHS(id) {
             if (res.success) {
                 alert("Xoá thành công !!");
                 $("#trHS_" + id).remove();
+                console.log('trHS_' + id);
                 var i = 0;
                 console.item;
                 for (i = 0; i < dataHS.length; i++) {
@@ -178,6 +182,7 @@ function deleteHS(id) {
         }
 
     });
+    }
 }
 //Lớp
 function openModal(id) {
@@ -249,6 +254,7 @@ function saveLop() {
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
+                alert("Trùng dữ liệu, vui lòng kiểm tra lại!")
             }
 
         });
@@ -297,35 +303,38 @@ function saveLop() {
 
 }
 function deleteLop(id) {
+    if (confirm("Bạn có muốn xoá lớp này không?") == true) {
     $.ajax({
-        type: "POST",
-        url: "/Lop?handler=Delete",
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("XSRF-TOKEN",
-                $('input:hidden[name="__RequestVerificationToken"]').val());
-        },
-        data: { maLop: id },
-        dataType: "json",
-        success: function (res) {
-            console.log(res)
-            if (res.success) {
-                alert("Xoá thành công !!");
-                $("#trLop_" + id).remove();
-                var i = 0;
-                for (i = 0; i < dataLop.length; i++) {
-                    if (id == dataLop[i].MaLop) {
-                        console.log(i);
-                        break;
+            type: "POST",
+            url: "/Lop?handler=Delete",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            data: { maLop: id },
+            dataType: "json",
+            success: function (res) {
+                console.log(res)
+                if (res.success) {
+                    alert("Xoá thành công !!");
+                    $("#trLop_" + id).remove();
+                    var i = 0;
+                    for (i = 0; i < dataLop.length; i++) {
+                        if (id == dataLop[i].MaLop) {
+                            console.log(i);
+                            break;
+                        }
                     }
+                    dataLop.splice(i, 1);
                 }
-                dataLop.splice(i, 1);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
             }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
-        }
 
-    });
+        });
+    }
+    
 }
 //Giáo viên
 function openModalGV(id) {
@@ -474,35 +483,39 @@ function saveGV() {
 
 }
 function deleteGV(id) {
-    $.ajax({
-        type: "POST",
-        url: "/GiaoVien?handler=Delete",
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("XSRF-TOKEN",
-                $('input:hidden[name="__RequestVerificationToken"]').val());
-        },
-        data: { maGV: id },
-        dataType: "json",
-        success: function (res) {
-            console.log(res)
-            if (res.success) {
-                alert("Xoá thành công !!");
-                $("#trGV_" + id).remove();
-                var i = 0;
-                console.item;
-                for (i = 0; i < dataGV.length; i++) {
-                    if (id == dataGV[i].MaGv) {
-                        break;
+    if (confirm("bạn có muốn xoá giáo viên này không") == true) {
+        $.ajax({
+                type: "POST",
+                url: "/GiaoVien?handler=Delete",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                data: { maGV: id },
+                dataType: "json",
+                success: function (res) {
+                    console.log(res)
+                    if (res.success) {
+                        alert("Xoá thành công !!");
+                        $("#trGV_" + id).remove();
+                        var i = 0;
+                        console.item;
+                        for (i = 0; i < dataGV.length; i++) {
+                            if (id == dataGV[i].MaGv) {
+                                break;
+                            }
+                        }
+                        dataGv.splice(i, 1);
                     }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                    alert("Giáo viên còn đang dạy, vui lòng kiểm tra lại!");
                 }
-                dataGv.splice(i, 1);
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
-        }
 
-    });
+            });
+    }
+    
 }
 //Môn học
 function openModalMH(id) {
@@ -603,34 +616,38 @@ function saveMH() {
 
 }
 function deleteMH(id) {
-    $.ajax({
-        type: "POST",
-        url: "/MonHoc?handler=Delete",
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("XSRF-TOKEN",
-                $('input:hidden[name="__RequestVerificationToken"]').val());
-        },
-        data: { maMH: id },
-        dataType: "json",
-        success: function (res) {
-            console.log(res)
-            if (res.success) {
-                alert("Xoá thành công !!");
-                $("#trMH_" + id).remove();
-                var i = 0;
-                console.item;
-                for (i = 0; i < dataMH.length; i++) {
-                    if (id == dataMH[i].MaMh) {
-                        break;
+    if (confirm("Bạn có muốn xoá môn học này không?") == true) {
+        $.ajax({
+                type: "POST",
+                url: "/MonHoc?handler=Delete",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                data: { maMH: id },
+                dataType: "json",
+                success: function (res) {
+                    console.log(res)
+                    if (res.success) {
+                        alert("Xoá thành công !!");
+                        $("#trMH_" + id).remove();
+                        var i = 0;
+                        console.item;
+                        for (i = 0; i < dataMH.length; i++) {
+                            if (id == dataMH[i].MaMh) {
+                                break;
+                            }
+                        }
+                        dataMH.splice(i, 1);
                     }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                    alert("Môn này còn được dạy ở lớp, vui lòng kiểm tra lại");
                 }
-                dataMH.splice(i, 1);
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
-        }
-    });
+            });
+    }
+    
 }
 //Khoá học
 function openModalKH(id) {
@@ -745,35 +762,39 @@ function saveKH() {
 
 }
 function deleteKH(id) {
-    $.ajax({
-        type: "POST",
-        url: "/KhoaHoc?handler=Delete",
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("XSRF-TOKEN",
-                $('input:hidden[name="__RequestVerificationToken"]').val());
-        },
-        data: { maKH: id },
-        dataType: "json",
-        success: function (res) {
-            console.log(res)
-            if (res.success) {
-                alert("Xoá thành công !!");
-                $("#trKH_" + id).remove();
-                var i = 0;
-                console.item;
-                for (i = 0; i < dataKH.length; i++) {
-                    if (id == dataKH[i].MaKh) {
-                        break;
+    if (confirm("Bạn có muốn xoá khoá học này không") == true) {
+        $.ajax({
+                type: "POST",
+                url: "/KhoaHoc?handler=Delete",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                data: { maKH: id },
+                dataType: "json",
+                success: function (res) {
+                    console.log(res)
+                    if (res.success) {
+                        alert("Xoá thành công !!");
+                        $("#trKH_" + id).remove();
+                        var i = 0;
+                        console.item;
+                        for (i = 0; i < dataKH.length; i++) {
+                            if (id == dataKH[i].MaKh) {
+                                break;
+                            }
+                        }
+                        dataKH.splice(i, 1);
                     }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                    alert("Không thể xoá khoá học này. Khoá học này đã bắt đầu hoặc đã kết thúc."); 
                 }
-                dataKH.splice(i, 1);
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
-        }
 
-    });
+            });
+    }
+    
 }
 //Admin
 function openModalAd(id) {
@@ -1489,35 +1510,38 @@ function saveD() {
     }
 
 }
-function deleteD(idMH, idHS) {
-    $.ajax({
-        type: "POST",
-        url: "/Diem?handler=Delete",
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("XSRF-TOKEN",
-                $('input:hidden[name="__RequestVerificationToken"]').val());
-        },
-        data: { maMH: idMH, maHS: idHS },
-        dataType: "json",
-        success: function (res) {
-            //console.log(res)
-            if (res.success) {
-                alert("Xoá thành công !!");
-                $("#trD_" + idMH + idHS).remove();
-                var i = 0;
-                for (i = 0; i < dataD.length; i++) {
-                    if (idMH == dataD[i].MaMh && idHS == dataD[i].MaHs) {
-                        break;
+function deleteD(idMH, idHS, idKh) {
+    if (confirm("Bạn có muốn xoá điểm này không?") == true) {
+        $.ajax({
+                type: "POST",
+                url: "/Diem?handler=Delete",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                data: { maMH: idMH, maHS: idHS },
+                dataType: "json",
+                success: function (res) {
+                    //console.log(res)
+                    if (res.success) {
+                        alert("Xoá thành công !!");
+                        $("#trD_" + idMH + idHS + idKh).remove();
+                        var i = 0;
+                        for (i = 0; i < dataD.length; i++) {
+                            if (idMH == dataD[i].MaMh && idHS == dataD[i].MaHs) {
+                                break;
+                            }
+                        }
+                        dataD.splice(i, 1);
                     }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
                 }
-                dataD.splice(i, 1);
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
-        }
 
-    });
+            });
+    }
+    
 }
 //Thời khoá biểu
 function openModalTKB(id) {
@@ -1536,6 +1560,7 @@ function openModalTKB(id) {
         $('#txtMaTKB').val(item.MaTkb);
         $('#selMaKH').val(item.MaKh);
         $('#selMaKH').attr('disabled', true);
+        $('#txtMaTKB').attr('disabled', true);
         if (item.TrangThai == true) {
             $('#selTT').val("true");
         }
@@ -1549,6 +1574,7 @@ function openModalTKB(id) {
         $('#txtMaTKB').val("");
         $('#selMaKH').val("");
         $('#selMaKH').attr('disabled', false);
+        $('#txtMaTKB').attr('disabled', true);
         $('#selTT').val("");
 
     }
@@ -1647,34 +1673,37 @@ function saveTKB() {
 
 }
 function deleteTKB(id) {
-    $.ajax({
-        type: "POST",
-        url: "/TKB?handler=Delete",
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("XSRF-TOKEN",
-                $('input:hidden[name="__RequestVerificationToken"]').val());
-        },
-        data: { maTKB: id },
-        dataType: "json",
-        success: function (res) {
-            console.log(res)
-            if (res.success) {
-                alert("Xoá thành công !!");
-                $("#trTKB_" + id).remove();
-                var i = 0;
-                console.item;
-                for (i = 0; i < dataTKB.length; i++) {
-                    if (id == dataTKB[i].MaTkb) {
-                        break;
+    if (confirm("Bạn có muốn xoá thời khoá biểu này không?") == true) {
+        $.ajax({
+                type: "POST",
+                url: "/TKB?handler=Delete",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                data: { maTKB: id },
+                dataType: "json",
+                success: function (res) {
+                    console.log(res)
+                    if (res.success) {
+                        alert("Xoá thành công !!");
+                        $("#trTKB_" + id).remove();
+                        var i = 0;
+                        console.item;
+                        for (i = 0; i < dataTKB.length; i++) {
+                            if (id == dataTKB[i].MaTkb) {
+                                break;
+                            }
+                        }
+                        dataTKB.splice(i, 1);
                     }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
                 }
-                dataTKB.splice(i, 1);
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
-        }
-    });
+            });
+    }
+    
 }
 //Chi tiết thời khoá biểu
 function openModalTKBCT(idLop, thu, tiet) {
@@ -1815,35 +1844,38 @@ function saveTKBCT() {
 
 }
 function deleteTKBCT(idLop, thu, tiet) {
-    $.ajax({
-        type: "POST",
-        url: "/ChiTietTKB?handler=Delete",
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("XSRF-TOKEN",
-                $('input:hidden[name="__RequestVerificationToken"]').val());
-        },
-        data: { maLop: idLop, thu: thu, tiet: tiet },
-        dataType: "json",
-        success: function (res) {
-            console.log(res)
-            if (res.success) {
-                alert("Xoá thành công !!");
-                console.log("trTKBCT_" + idLop + "_" + thu + "_" + tiet);
-                $("#trTKBCT_" + idLop + "_" + thu + "_" + tiet).remove();
-                var i = 0;
-                for (i = 0; i < dataTKBCT.length; i++) {
-                    if (idLop == dataTKBCT[i].MaLop && thu == dataTKBCT[i].Thu && tiet == dataTKBCT[i].Tiet) {
-                        break;
+    if (confirm("Bạn có muốn xoá thời khoá biểu này không?") == true) {
+        $.ajax({
+                type: "POST",
+                url: "/ChiTietTKB?handler=Delete",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                data: { maLop: idLop, thu: thu, tiet: tiet },
+                dataType: "json",
+                success: function (res) {
+                    console.log(res)
+                    if (res.success) {
+                        alert("Xoá thành công !!");
+                        console.log("trTKBCT_" + idLop + "_" + thu + "_" + tiet);
+                        $("#trTKBCT_" + idLop + "_" + thu + "_" + tiet).remove();
+                        var i = 0;
+                        for (i = 0; i < dataTKBCT.length; i++) {
+                            if (idLop == dataTKBCT[i].MaLop && thu == dataTKBCT[i].Thu && tiet == dataTKBCT[i].Tiet) {
+                                break;
+                            }
+                        }
+                        dataTKBCT.splice(i, 1);
                     }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
                 }
-                dataTKBCT.splice(i, 1);
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
-        }
 
-    });
+            });
+    }
+    
 }
 //đóng modal
 function closeModal() {
@@ -1877,5 +1909,62 @@ function goNext(user) {
         curPage += 1;
         getDataPage(curPage, user)
     }
+}
+function getDataPage(page, user) {
+    var filter = {
+        Page: page,
+        Size: 10
+    };
+    var str = JSON.stringify(filter);
+    $.ajax({
+        type: "POST",
+        url: "/" + user + "?handler=List",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("XSRF-TOKEN",
+                $('input:hidden[name="__RequestVerificationToken"]').val());
+        },
+        data: { filter: str },
+        dataType: "json",
+        success: function (res) {
+            console.log(res)
+            if (res.success) {
+                console.log(res.data)
+                var dt = res.data;
+                totPage = dt.totalPage;
+                $("#tbodyDT").html("");
+                if (user == 'HocSinh') {
+                    dataHS1 = dt.data;
+                    $('#hsTemplate').tmpl(dataHS1).appendTo("#tbodyDT")
+                }
+                if (user == "GiaoVien") {
+                    dataGV1 = dt.data;
+                    $('#gvTemplate').tmpl(dataGV1).appendTo("#tbodyDT")
+                }
+                if (user == "Admin") {
+                    dataAd1 = dt.data;
+                    $('#adTemplate').tmpl(dataAd1).appendTo("#tbodyDT")
+                }
+                if (user == "MonHoc") {
+                    dataMH1 = dt.data;
+                    $('#mhTemplate').tmpl(dataMH1).appendTo("#tbodyDT")
+                }
+                if (user == "Diem") {
+                    dataD1 = dt.data;
+                    $('#diemTemplate').tmpl(dataD1).appendTo("#tbodyDT")
+                }
+                if (user == "ChiTietTKB") {
+                    console.log(dt.data);
+                    dataTKBCT1 = dt.data;
+                    console.log(dataTKBCT1);
+                    $('#tkbTemplate').tmpl(dataTKBCT1).appendTo("#tbodyDT")
+                }
+                $('#spanCurrentPage').text(page);
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+        }
+
+    });
 }
 

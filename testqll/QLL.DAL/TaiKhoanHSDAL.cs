@@ -57,6 +57,25 @@ namespace QLL.DAL
             }
             return res;
         }
+        public bool DeleteById(string  maHs)
+        {
+            bool res = false;
+            var tk = db.TaiKhoanHsdbs.FirstOrDefault(x => x.MaHs == maHs);
+            try
+            {
+                if (tk != null)
+                {
+                    db.TaiKhoanHsdbs.Remove(tk);
+                    db.SaveChanges();
+                    res = true;
+                }
+            }
+            catch (Exception ex1)
+            {
+                res = false;
+            } 
+            return res;
+        }
         public bool Delete(int maTk)
         {
             bool res = false;

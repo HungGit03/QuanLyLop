@@ -17,7 +17,26 @@ namespace QLL.DAL
         {
             db = new QuanLyLopContext();
         }
+        public bool DeleteByIdHs(string maHs)
+        {
+            bool res = false;
+            var ls = db.DiemDbs.Where(x => x.MaHs == maHs).ToList();
+            try
+            {
+                foreach (var d in ls)
+                {
+                    db.DiemDbs.Remove(d);
+                }
+                db.SaveChanges();
+                res = true;
+            }
 
+            catch (Exception ex1)
+            {
+                res = false;
+            } 
+            return res;
+        }
         public object GetDiemByPage(int page, int size)
         {
 

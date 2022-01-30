@@ -179,6 +179,16 @@ namespace QLL.DAL
             var hs = db.HocSinhDbs.FirstOrDefault(x => x.MaHs == maHS);
             try
             {
+                DiemDAL ddal = new DiemDAL();
+                TaiKhoanHSDAL tk = new TaiKhoanHSDAL();
+                if(db.DiemDbs.FirstOrDefault(x=>x.MaHs == maHS) != null)
+                {
+                    tk.DeleteById(hs.MaHs);
+                }
+                if (db.TaiKhoanHsdbs.FirstOrDefault(x => x.MaHs == maHS) != null)
+                {
+                    ddal.DeleteByIdHs(hs.MaHs);
+                }
                 db.HocSinhDbs.Remove(hs);
                 db.SaveChanges();
                 res = true;

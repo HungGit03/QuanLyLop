@@ -145,6 +145,11 @@ namespace QLL.DAL
             var ad = db.AdminDbs.FirstOrDefault(x => x.MaAdmin == maAd);
             try
             {
+                TaiKhoanAdminDAL tkdal = new TaiKhoanAdminDAL();
+                if(db.TaiKhoanAdDbs.FirstOrDefault(x=>x.MaAdmin == maAd) != null)
+                {
+                    tkdal.Delete(db.TaiKhoanAdDbs.FirstOrDefault(x => x.MaAdmin == maAd).MaTk);
+                }
                 db.AdminDbs.Remove(ad);
                 db.SaveChanges();
                 res = true;

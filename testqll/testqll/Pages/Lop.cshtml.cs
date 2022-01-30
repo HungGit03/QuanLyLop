@@ -55,14 +55,14 @@ namespace QuanLyLop2_ASP.NETCore.Pages
             if(maLop != 0)
             {
                 lstLop = bus.GetAll().Where(x=>x.MaLop == maLop).ToList();
-                lstLop = lst;
+                lst = lstLop;
                 flat = 1;
             }
             if (phong != null)
             {
                 if(flat == 1)
                 {
-                    lstLop = lst.Where(x => x.MaLop == maLop && x.PhongHoc == phong).ToList();
+                    lstLop = lst.Where(x => x.PhongHoc == phong).ToList();
                     lst = lstLop;
                 }
                 else
@@ -76,7 +76,7 @@ namespace QuanLyLop2_ASP.NETCore.Pages
             {
                 if (flat == 1)
                 {
-                    lstLop = lst.Where(x => x.MaLop == maLop && x.PhongHoc == phong && x.TrangThai.ToLower() == tt.ToLower()).ToList();
+                    lstLop = lst.Where(x => x.TrangThai.ToLower() == tt.ToLower()).ToList();
                     lst = lstLop;
                 }
                 else

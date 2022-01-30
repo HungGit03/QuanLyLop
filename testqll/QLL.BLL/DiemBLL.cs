@@ -19,7 +19,10 @@ namespace QLL.BLL
         {
             return dal.GetDiemByPage(page, size);
         }
-
+        public bool DeleteByIdHs(string maHs)
+        {
+            return dal.DeleteByIdHs(maHs);
+        }
         public IList<DiemDTO> GetByMonGV(int maLop, string maGv)
         {
             return dal.GetByMonGV(maLop, maGv);

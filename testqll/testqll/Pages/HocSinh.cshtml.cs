@@ -76,11 +76,11 @@ namespace QuanLyLop2_ASP.NETCore.Pages
             {
                 if (flat == 1)
                 {
-                    temp = lstHS1.Where(x => x.TenHs == tenHS).ToList();
+                    temp = lstHS1.Where(x => x.TenHs.ToLower().Contains(tenHS)).ToList();
                 }
                 else 
                 {  
-                    temp = lstHS.Where(x => x.TenHs == tenHS).ToList();
+                    temp = lstHS.Where(x => x.TenHs.ToLower().Contains(tenHS)).ToList();
                 }
                
                 lstHS1 = temp;

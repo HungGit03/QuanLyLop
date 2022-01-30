@@ -63,6 +63,8 @@ namespace QLL.DAL
             var tkb = db.Tkbdbs.FirstOrDefault(x => x.MaTkb == maTkb);
             try
             {
+                TKBCTDAL tkbct = new TKBCTDAL();
+                tkbct.DeleteByIdTKB(maTkb);
                 db.Tkbdbs.Remove(tkb);
                 db.SaveChanges();
                 res = true;
