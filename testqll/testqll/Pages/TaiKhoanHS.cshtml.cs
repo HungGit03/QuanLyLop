@@ -44,7 +44,14 @@ namespace QuanLyLop2_ASP.NETCore.Pages
             }
             if (tdn != null && tdn != "")
             {
-                lstTKHS = bus.GetAll().Where(x => x.TenDangNhap == tdn).ToList();
+                if(flat == 1)
+                {
+                    lstTKHS = bus.GetAll().Where(x => x.TenDangNhap == tdn && x.MaTk == maTk).ToList();
+                }    
+                else
+                {
+                    lstTKHS = bus.GetAll().Where(x => x.TenDangNhap == tdn).ToList();
+                }
                 flat = 1;
             }
             if(flat == 0)

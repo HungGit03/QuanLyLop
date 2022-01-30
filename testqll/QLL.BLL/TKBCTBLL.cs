@@ -19,6 +19,10 @@ namespace QLL.BLL
         {
             return dal.GetById(maTKB);
         }
+        public bool DeleteByIdTKB(int maTKB)
+        {
+            return dal.DeleteByIdTKB(maTKB);
+        }
         public IList<TKBCTDTO> GetAll()
         {
             return dal.GetAll();

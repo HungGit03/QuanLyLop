@@ -159,6 +159,12 @@ namespace QLL.DAL
             var hs = db.GiaoVienDbs.FirstOrDefault(x => x.MaGv == maGV);
             try
             {
+                TaiKhoanGVDAL gvDal = new TaiKhoanGVDAL();
+                if (db.TaiKhoanGvdbs.FirstOrDefault(x => x.MaGv == maGV) != null)
+                {
+                    gvDal.Delete(db.TaiKhoanGvdbs.FirstOrDefault(x => x.MaGv == maGV).MaTk);
+                }
+                
                 db.GiaoVienDbs.Remove(hs);
                 db.SaveChanges();
                 res = true;

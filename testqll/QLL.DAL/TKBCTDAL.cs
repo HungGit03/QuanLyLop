@@ -104,6 +104,25 @@ namespace QLL.DAL
             }
             return res;
         }
+        public bool DeleteByIdTKB(int maTKB)
+        {
+            bool res = false;
+            try
+            {
+                var ls = db.Tkbctdbs.Where(x => x.MaTkb == maTKB).ToList();
+                foreach(var tkb in ls)
+                {
+                    db.Tkbctdbs.Remove(tkb);
+                }
+                db.SaveChanges();
+                res = true;
+            }
+            catch(Exception ex1)
+            {
+                res = false;
+            }
+            return res;
+        }
         public TKBCTDTO Add(TKBCTDTO tkb)
         {
             TKBCTDTO res = new TKBCTDTO();

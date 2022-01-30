@@ -61,26 +61,50 @@ namespace QuanLyLop2_ASP.NETCore.Pages
             }
             if (tenGV != null && tenGV != "")
             {
-                temp = lstGV.Where(x => x.TenGv.ToLower() == tenGV.ToLower()).ToList();
+                if(flat == 1)
+                {
+                    temp = lstGV1.Where(x => x.TenGv.ToLower().Contains(tenGV.ToLower())).ToList();
+                }
+                else
+                {
+                    temp = lstGV.Where(x => x.TenGv.ToLower().Contains(tenGV.ToLower())).ToList();
+                }
                 lstGV1 = temp;
                 flat = 1;
             }
             if (tdcm != null && tdcm != "")
             {
-                temp = lstGV.Where(x => x.TrinhDoChuyenMon.ToLower() == tdcm.ToLower()).ToList();
-                lstGV1 = temp;
-                flat = 1;
-            }
-            if (cn != null && cn != "")
-            {
-                temp = lstGV.Where(x => x.ChuyenNganh.ToLower() == cn.ToLower()).ToList();
-                lstGV1 = temp;
-                flat = 1;
-            }
-            if(flat == 0)
-            {
-                OnGet();
-            }    
+                if (flat == 1)
+                {
+                    temp = lstGV1.Where(x => x.TrinhDoChuyenMon.ToLower() == tdcm.ToLower()).ToList();
+                }
+                else
+                {
+                    temp = lstGV.Where(x => x.TrinhDoChuyenMon.ToLower() == tdcm.ToLower()).ToList();
+                }
+
+                    lstGV1 = temp;
+                    flat = 1;
+                }
+                if (cn != null && cn != "")
+                {
+                    if (flat == 1)
+                    {
+                        temp = lstGV1.Where(x => x.ChuyenNganh.ToLower() == cn.ToLower()).ToList();
+                    }
+                    else
+                    {
+                        temp = lstGV.Where(x => x.ChuyenNganh.ToLower() == cn.ToLower()).ToList();
+
+                    }
+                    lstGV1 = temp;
+                    flat = 1;
+                }
+                if (flat == 0)
+                {
+                    OnGet();
+                }
+            
         }
         public IActionResult OnPostList(string filter)
         {

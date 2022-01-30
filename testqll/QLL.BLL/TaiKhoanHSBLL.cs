@@ -19,6 +19,10 @@ namespace QLL.BLL
         {
             return dal.GetAll();
         }
+        public bool DeleteById(string maHs)
+        {
+            return dal.DeleteById(maHs);
+        }
         public bool Update(TaiKhoanHSDTO tk)
         {
             return dal.Update(tk);
